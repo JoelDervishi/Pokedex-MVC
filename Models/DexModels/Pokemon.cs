@@ -1,5 +1,8 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 public class Pokemon{
-    //Primary key
+    [Key]
     public int DexId { get; set; }  
     public string? Name{ get; set; }
     public string? Name_Jap { get; set; }
@@ -12,10 +15,13 @@ public class Pokemon{
     public bool Is_baby { get; set; }
     public bool Is_legendary { get; set; }
     public bool Is_mythic { get; set; }
-    //Foreign keys
-    public virtual ICollection<Type>? Types { get; set; }
+    
+    [ForeignKey("Ability")]
     public virtual ICollection<Ability>? Abilities { get; set; }
-    public EvolutionChain? EvolutionChain { get; set; }
+    [ForeignKey("Image")]
+    public Image? Images { get; set; }
+    [ForeignKey("Move")]
     public virtual ICollection<Move>? Moves { get; set; }
-
+    [ForeignKey("Type")]
+    public virtual ICollection<Type>? Types { get; set; }
 }

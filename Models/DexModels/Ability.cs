@@ -1,9 +1,13 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 public class Ability{
-    //Primary key
+    [Key]
     public int Id { get; set; }
     public string? Name { get; set; }
     public string? Description { get; set; }
     public bool Is_hidden { get; set; }
-    //Foreign key 
+    
+    [ForeignKey("Pokemon")]
     public virtual ICollection<Pokemon>? Pokemons { get; set; }
 }
