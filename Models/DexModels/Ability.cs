@@ -6,8 +6,6 @@ public class Ability{
     public int Id { get; set; }
     public string? Name { get; set; }
     public string? Description { get; set; }
-    public bool Is_hidden { get; set; }
     
-    [ForeignKey("Pokemon")]
-    public virtual ICollection<Pokemon>? Pokemons { get; set; }
+    public virtual ICollection<Pokemon_Ability>? Pokemons { get; set; }
 }
