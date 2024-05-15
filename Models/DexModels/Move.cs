@@ -6,10 +6,10 @@ public class Move{
     public int Id { get; set; }
     public string? Name { get; set; }
     public string? Description { get; set; }
-    public string? Power { get; set; }
-    public string? Precision { get; set; }
+    public int Power { get; set; }
+    public int Precision { get; set; }
     
-    public virtual ICollection<Pokemon>? Pokemons { get; set; }
     [ForeignKey("TypeId")]
     public Type? Type { get; set; }
+    public virtual ICollection<Pokemon>? Pokemons { get; set; }
 }

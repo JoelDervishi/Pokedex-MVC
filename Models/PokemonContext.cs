@@ -13,4 +13,20 @@ public class PokemonContext : DbContext{
     {
         optionsBuilder.UseSqlite("Data source=Data/Pokedex.db");
     }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<Pokemon_Ability>().HasKey(x => new {x.PokemonDexId, x.AbilityId});
+
+        modelBuilder.Entity<Pokemon_Ability>()
+            .HasOne(e => e.Ability)
+            .WithMany(s => s.Pokemons)
+            .HasForeignKey(e => e.AbilityId);
+
+        modelBuilder.Entity<Pokemon_Ability>()
+            .HasOne(e => e.Pokemon)
+            .WithMany(c => c.Abilities)
+            .HasForeignKey(e => e.PokemonDexId);
+    }
 }
