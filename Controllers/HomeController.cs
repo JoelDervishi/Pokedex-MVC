@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Pokedex_MVC.Models;
 
@@ -8,50 +9,52 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
 
-    public HomeController(ILogger<HomeController> logger)
-    {
+    public HomeController(ILogger<HomeController> logger) {
         _logger = logger;
     }
 
-    public static List<Pokemon> ReadThingsFromCSV(string filePath)
-    {
-        List<Pokemon> Pokemons = new List<Pokemon>();
+    public static List<Move> ReadThingsFromCSV(string filePath) {
+        List<Move> things = new List<Move>();
 
-        using (StreamReader reader = new StreamReader(filePath))
-        {
+        using (StreamReader reader = new StreamReader(filePath)) {
             // Skip the header line if needed
             reader.ReadLine();
 
             while (!reader.EndOfStream)
             {
-                string[] data = reader.ReadLine().Split('|');
+                string[] data = reader.ReadLine()!.Split('|');
+                for(int i = 0; i < data.Length; i++){
+                    data[i] = data[i].Trim();
+                }
 
-                Pokemons.Add(new Pokemon { DexId = int.Parse(data[0]) });
+                things.Add(new Move {
+                    Id = int.Parse(data[0]),
+                    Name = data[1],
+                    Description = data[2]
+                    });
             }
         }
-
-        return Pokemons;
+        return things;
     }
 
-    public static void InsertThingsIntoDatabase(List<Pokemon> Pokemons)
-    {
-        using (var context = new PokemonContext())
-        {
-            context.Pokemons.AddRange(Pokemons);
+    public static void InsertThingsIntoDatabase(List<Move> things) {
+        using (var context = new PokemonContext()) {
+            context.Moves.AddRange(things);
             context.SaveChanges();
         }
-
-
     }
 
-    public IActionResult Index()
-    {
+    public IActionResult Index() {
         return View();
     }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    [HttpPost]
+    public IActionResult InsertBaseCSV() {
+        InsertThingsIntoDatabase(ReadThingsFromCSV("./CSV/Move.csv"));
+        Console.WriteLine("done");
+        return RedirectToAction("Index", "Home");
     }
+
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error() { return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier }); }
 }

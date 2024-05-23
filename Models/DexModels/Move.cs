@@ -8,8 +8,10 @@ public class Move{
     public string? Description { get; set; }
     public int Power { get; set; }
     public int Precision { get; set; }
+    public int PowerPoints { get; set; }
     
-    [ForeignKey("TypeId")]
+    public int TypeId { get; set; }
     public Type? Type { get; set; }
-    public virtual ICollection<Pokemon>? Pokemons { get; set; }
+    
+    public virtual ICollection<Pokemon_Move>? Pokemons { get; set; }
 }

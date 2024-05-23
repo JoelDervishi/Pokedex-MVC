@@ -6,5 +6,5 @@ public class EggGroup{
     public int Id { get; set; }
     public string? Name { get; set; }
     
-    public virtual ICollection<Pokemon>? Pokemons { get; set; }
+    public virtual ICollection<Pokemon_EggGroup>? Pokemons { get; set; }
 }

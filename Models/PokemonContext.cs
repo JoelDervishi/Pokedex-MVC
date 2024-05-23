@@ -24,19 +24,50 @@ public class PokemonContext : DbContext{
             .HasOne(e => e.Ability)
             .WithMany(s => s.Pokemons)
             .HasForeignKey(e => e.AbilityId);
-
         modelBuilder.Entity<Pokemon_Ability>()
             .HasOne(e => e.Pokemon)
             .WithMany(c => c.Abilities)
+            .HasForeignKey(e => e.PokemonDexId);        
+
+        modelBuilder.Entity<Pokemon_EggGroup>().HasKey(x => new {x.PokemonDexId, x.EggGroupId});
+
+        modelBuilder.Entity<Pokemon_EggGroup>()
+            .HasOne(e => e.EggGroup)
+            .WithMany(s => s.Pokemons)
+            .HasForeignKey(e => e.EggGroupId);
+        modelBuilder.Entity<Pokemon_EggGroup>()
+            .HasOne(e => e.Pokemon)
+            .WithMany(s => s.EggGroups)
             .HasForeignKey(e => e.PokemonDexId);
 
+        modelBuilder.Entity<Pokemon_Move>().HasKey(x => new {x.PokemonDexId, x.MoveId});
+
+        modelBuilder.Entity<Pokemon_Move>()
+            .HasOne(e => e.Move)
+            .WithMany(s => s.Pokemons)
+            .HasForeignKey(e => e.MoveId);
+        modelBuilder.Entity<Pokemon_Move>()
+            .HasOne(e => e.Pokemon)
+            .WithMany(s => s.Moves)
+            .HasForeignKey(e => e.PokemonDexId);
+
+        modelBuilder.Entity<Pokemon_Type>().HasKey(x => new {x.PokemonDexId, x.TypeId});
+
+        modelBuilder.Entity<Pokemon_Type>()
+            .HasOne(e => e.Type)
+            .WithMany(s => s.Pokemons)
+            .HasForeignKey(e => e.TypeId);
+        modelBuilder.Entity<Pokemon_Type>()
+            .HasOne(e => e.Pokemon)
+            .WithMany(s => s.Types)
+            .HasForeignKey(e => e.PokemonDexId);
+        //
         modelBuilder.Entity<Favourite>().HasKey(x => new {x.PokemonDexId, x.UserId});
 
         modelBuilder.Entity<Favourite>()
             .HasOne(e => e.Pokemon)
             .WithMany(s => s.Favourites)
             .HasForeignKey(e => e.PokemonDexId);
-
         modelBuilder.Entity<Favourite>()
             .HasOne(e => e.User)
             .WithMany(s => s.Favourites)

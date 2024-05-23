@@ -7,8 +7,8 @@ public class TypesInteraction{
     
     public float Interaction { get; set; }
     
-    [ForeignKey("FirstTypeId")]
+    public int FirstTypeId { get; set; }
     public Type? FirstType { get; set; }
-    [ForeignKey("SecondTypeId")]
+    public int SecondTypeId { get; set; }
     public Type? SecondType { get; set; }
 }

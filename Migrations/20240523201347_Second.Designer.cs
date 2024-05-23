@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Pokedex_MVC.Migrations
 {
     [DbContext(typeof(PokemonContext))]
-    [Migration("20240521202047_First")]
-    partial class First
+    [Migration("20240523201347_Second")]
+    partial class Second
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,21 +50,6 @@ namespace Pokedex_MVC.Migrations
                     b.ToTable("EggGroups");
                 });
 
-            modelBuilder.Entity("EggGroupPokemon", b =>
-                {
-                    b.Property<int>("EggGroupsId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("PokemonsDexId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("EggGroupsId", "PokemonsDexId");
-
-                    b.HasIndex("PokemonsDexId");
-
-                    b.ToTable("EggGroupPokemon");
-                });
-
             modelBuilder.Entity("Favourite", b =>
                 {
                     b.Property<int>("PokemonDexId")
@@ -98,9 +83,6 @@ namespace Pokedex_MVC.Migrations
                     b.Property<string>("Official_s")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("PokemonId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Sprite")
                         .HasColumnType("TEXT");
 
@@ -108,8 +90,6 @@ namespace Pokedex_MVC.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PokemonId");
 
                     b.ToTable("Images");
                 });
@@ -129,10 +109,13 @@ namespace Pokedex_MVC.Migrations
                     b.Property<int>("Power")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("PowerPoints")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Precision")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("TypeId")
+                    b.Property<int>("TypeId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -140,21 +123,6 @@ namespace Pokedex_MVC.Migrations
                     b.HasIndex("TypeId");
 
                     b.ToTable("Moves");
-                });
-
-            modelBuilder.Entity("MovePokemon", b =>
-                {
-                    b.Property<int>("MovesId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("PokemonsDexId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("MovesId", "PokemonsDexId");
-
-                    b.HasIndex("PokemonsDexId");
-
-                    b.ToTable("MovePokemon");
                 });
 
             modelBuilder.Entity("Pokemon", b =>
@@ -184,7 +152,7 @@ namespace Pokedex_MVC.Migrations
                     b.Property<float>("Height")
                         .HasColumnType("REAL");
 
-                    b.Property<int?>("ImageId")
+                    b.Property<int>("ImageId")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("Is_baby")
@@ -199,14 +167,8 @@ namespace Pokedex_MVC.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Name_Jap")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("NextStageId")
+                    b.Property<int?>("PreviousStageId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Roomaji")
-                        .HasColumnType("TEXT");
 
                     b.Property<int>("SpAtk")
                         .HasColumnType("INTEGER");
@@ -225,24 +187,9 @@ namespace Pokedex_MVC.Migrations
                     b.HasIndex("ImageId")
                         .IsUnique();
 
-                    b.HasIndex("NextStageId");
+                    b.HasIndex("PreviousStageId");
 
                     b.ToTable("Pokemons");
-                });
-
-            modelBuilder.Entity("PokemonType", b =>
-                {
-                    b.Property<int>("PokemonsDexId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("TypesId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("PokemonsDexId", "TypesId");
-
-                    b.HasIndex("TypesId");
-
-                    b.ToTable("PokemonType");
                 });
 
             modelBuilder.Entity("Pokemon_Ability", b =>
@@ -263,6 +210,51 @@ namespace Pokedex_MVC.Migrations
                     b.ToTable("Pokemon_Ability");
                 });
 
+            modelBuilder.Entity("Pokemon_EggGroup", b =>
+                {
+                    b.Property<int>("PokemonDexId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("EggGroupId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("PokemonDexId", "EggGroupId");
+
+                    b.HasIndex("EggGroupId");
+
+                    b.ToTable("Pokemon_EggGroup");
+                });
+
+            modelBuilder.Entity("Pokemon_Move", b =>
+                {
+                    b.Property<int>("PokemonDexId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MoveId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("PokemonDexId", "MoveId");
+
+                    b.HasIndex("MoveId");
+
+                    b.ToTable("Pokemon_Move");
+                });
+
+            modelBuilder.Entity("Pokemon_Type", b =>
+                {
+                    b.Property<int>("PokemonDexId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("TypeId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("PokemonDexId", "TypeId");
+
+                    b.HasIndex("TypeId");
+
+                    b.ToTable("Pokemon_Type");
+                });
+
             modelBuilder.Entity("Type", b =>
                 {
                     b.Property<int>("Id")
@@ -279,13 +271,13 @@ namespace Pokedex_MVC.Migrations
 
             modelBuilder.Entity("TypesInteraction", b =>
                 {
-                    b.Property<int?>("FirstTypeId")
+                    b.Property<int>("FirstTypeId")
                         .HasColumnType("INTEGER");
 
                     b.Property<float>("Interaction")
                         .HasColumnType("REAL");
 
-                    b.Property<int?>("SecondTypeId")
+                    b.Property<int>("SecondTypeId")
                         .HasColumnType("INTEGER");
 
                     b.HasIndex("FirstTypeId");
@@ -315,21 +307,6 @@ namespace Pokedex_MVC.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("EggGroupPokemon", b =>
-                {
-                    b.HasOne("EggGroup", null)
-                        .WithMany()
-                        .HasForeignKey("EggGroupsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Pokemon", null)
-                        .WithMany()
-                        .HasForeignKey("PokemonsDexId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Favourite", b =>
                 {
                     b.HasOne("Pokemon", "Pokemon")
@@ -349,67 +326,32 @@ namespace Pokedex_MVC.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Image", b =>
-                {
-                    b.HasOne("Pokemon", "Pokemon")
-                        .WithMany()
-                        .HasForeignKey("PokemonId");
-
-                    b.Navigation("Pokemon");
-                });
-
             modelBuilder.Entity("Move", b =>
                 {
                     b.HasOne("Type", "Type")
                         .WithMany("Moves")
-                        .HasForeignKey("TypeId");
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Type");
                 });
 
-            modelBuilder.Entity("MovePokemon", b =>
-                {
-                    b.HasOne("Move", null)
-                        .WithMany()
-                        .HasForeignKey("MovesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Pokemon", null)
-                        .WithMany()
-                        .HasForeignKey("PokemonsDexId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Pokemon", b =>
                 {
-                    b.HasOne("Image", "Images")
-                        .WithOne()
-                        .HasForeignKey("Pokemon", "ImageId");
-
-                    b.HasOne("Pokemon", "NextStage")
-                        .WithMany()
-                        .HasForeignKey("NextStageId");
-
-                    b.Navigation("Images");
-
-                    b.Navigation("NextStage");
-                });
-
-            modelBuilder.Entity("PokemonType", b =>
-                {
-                    b.HasOne("Pokemon", null)
-                        .WithMany()
-                        .HasForeignKey("PokemonsDexId")
+                    b.HasOne("Image", "Image")
+                        .WithOne("Pokemon")
+                        .HasForeignKey("Pokemon", "ImageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Type", null)
+                    b.HasOne("Pokemon", "PreviousStage")
                         .WithMany()
-                        .HasForeignKey("TypesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PreviousStageId");
+
+                    b.Navigation("Image");
+
+                    b.Navigation("PreviousStage");
                 });
 
             modelBuilder.Entity("Pokemon_Ability", b =>
@@ -431,15 +373,76 @@ namespace Pokedex_MVC.Migrations
                     b.Navigation("Pokemon");
                 });
 
+            modelBuilder.Entity("Pokemon_EggGroup", b =>
+                {
+                    b.HasOne("EggGroup", "EggGroup")
+                        .WithMany("Pokemons")
+                        .HasForeignKey("EggGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Pokemon", "Pokemon")
+                        .WithMany("EggGroups")
+                        .HasForeignKey("PokemonDexId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EggGroup");
+
+                    b.Navigation("Pokemon");
+                });
+
+            modelBuilder.Entity("Pokemon_Move", b =>
+                {
+                    b.HasOne("Move", "Move")
+                        .WithMany("Pokemons")
+                        .HasForeignKey("MoveId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Pokemon", "Pokemon")
+                        .WithMany("Moves")
+                        .HasForeignKey("PokemonDexId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Move");
+
+                    b.Navigation("Pokemon");
+                });
+
+            modelBuilder.Entity("Pokemon_Type", b =>
+                {
+                    b.HasOne("Pokemon", "Pokemon")
+                        .WithMany("Types")
+                        .HasForeignKey("PokemonDexId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Type", "Type")
+                        .WithMany("Pokemons")
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pokemon");
+
+                    b.Navigation("Type");
+                });
+
             modelBuilder.Entity("TypesInteraction", b =>
                 {
                     b.HasOne("Type", "FirstType")
                         .WithMany()
-                        .HasForeignKey("FirstTypeId");
+                        .HasForeignKey("FirstTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Type", "SecondType")
                         .WithMany()
-                        .HasForeignKey("SecondTypeId");
+                        .HasForeignKey("SecondTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("FirstType");
 
@@ -451,16 +454,39 @@ namespace Pokedex_MVC.Migrations
                     b.Navigation("Pokemons");
                 });
 
+            modelBuilder.Entity("EggGroup", b =>
+                {
+                    b.Navigation("Pokemons");
+                });
+
+            modelBuilder.Entity("Image", b =>
+                {
+                    b.Navigation("Pokemon");
+                });
+
+            modelBuilder.Entity("Move", b =>
+                {
+                    b.Navigation("Pokemons");
+                });
+
             modelBuilder.Entity("Pokemon", b =>
                 {
                     b.Navigation("Abilities");
 
+                    b.Navigation("EggGroups");
+
                     b.Navigation("Favourites");
+
+                    b.Navigation("Moves");
+
+                    b.Navigation("Types");
                 });
 
             modelBuilder.Entity("Type", b =>
                 {
                     b.Navigation("Moves");
+
+                    b.Navigation("Pokemons");
                 });
 
             modelBuilder.Entity("User", b =>

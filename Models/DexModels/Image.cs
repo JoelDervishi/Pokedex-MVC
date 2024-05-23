@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 public class Image {
     [Key]
-    public int Id { get; set; } 
+    public int Id { get; set; }
     public string? Official { get; set; }
     public string? Official_s { get; set; }
     public string? Sprite { get; set; }
@@ -11,6 +11,5 @@ public class Image {
     public string? Animated { get; set; } 
     public string? Animated_s { get; set; }
 
-    [ForeignKey("PokemonId")]
     public Pokemon? Pokemon { get; set; }
 } 
