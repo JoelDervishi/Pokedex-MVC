@@ -31,4 +31,5 @@ public class Pokemon {
     public virtual ICollection<Move>? Moves { get; set; }
     public virtual ICollection<Type>? Types { get; set; }
     public virtual ICollection<EggGroup>? EggGroups { get; set; }
+    public virtual ICollection<Favourite>? Favourites { get; set; }
 }

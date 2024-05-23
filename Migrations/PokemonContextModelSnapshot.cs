@@ -62,6 +62,21 @@ namespace Pokedex_MVC.Migrations
                     b.ToTable("EggGroupPokemon");
                 });
 
+            modelBuilder.Entity("Favourite", b =>
+                {
+                    b.Property<int>("PokemonDexId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("PokemonDexId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Favourite");
+                });
+
             modelBuilder.Entity("Image", b =>
                 {
                     b.Property<int>("Id")
@@ -277,6 +292,26 @@ namespace Pokedex_MVC.Migrations
                     b.ToTable("TypesInteractions");
                 });
 
+            modelBuilder.Entity("User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("EggGroupPokemon", b =>
                 {
                     b.HasOne("EggGroup", null)
@@ -290,6 +325,25 @@ namespace Pokedex_MVC.Migrations
                         .HasForeignKey("PokemonsDexId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Favourite", b =>
+                {
+                    b.HasOne("Pokemon", "Pokemon")
+                        .WithMany("Favourites")
+                        .HasForeignKey("PokemonDexId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("User", "User")
+                        .WithMany("Favourites")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pokemon");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Image", b =>
@@ -397,11 +451,18 @@ namespace Pokedex_MVC.Migrations
             modelBuilder.Entity("Pokemon", b =>
                 {
                     b.Navigation("Abilities");
+
+                    b.Navigation("Favourites");
                 });
 
             modelBuilder.Entity("Type", b =>
                 {
                     b.Navigation("Moves");
+                });
+
+            modelBuilder.Entity("User", b =>
+                {
+                    b.Navigation("Favourites");
                 });
 #pragma warning restore 612, 618
         }

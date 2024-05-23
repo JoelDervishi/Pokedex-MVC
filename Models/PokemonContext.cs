@@ -8,6 +8,7 @@ public class PokemonContext : DbContext{
     public DbSet<Type> Types { get; set; }
     public DbSet<TypesInteraction> TypesInteractions { get; set; }
     public DbSet<EggGroup> EggGroups { get; set; }
+    public DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -28,5 +29,17 @@ public class PokemonContext : DbContext{
             .HasOne(e => e.Pokemon)
             .WithMany(c => c.Abilities)
             .HasForeignKey(e => e.PokemonDexId);
+
+        modelBuilder.Entity<Favourite>().HasKey(x => new {x.PokemonDexId, x.UserId});
+
+        modelBuilder.Entity<Favourite>()
+            .HasOne(e => e.Pokemon)
+            .WithMany(s => s.Favourites)
+            .HasForeignKey(e => e.PokemonDexId);
+
+        modelBuilder.Entity<Favourite>()
+            .HasOne(e => e.User)
+            .WithMany(s => s.Favourites)
+            .HasForeignKey(e => e.UserId);
     }
 }

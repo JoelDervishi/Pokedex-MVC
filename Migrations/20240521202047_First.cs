@@ -5,7 +5,7 @@
 namespace Pokedex_MVC.Migrations
 {
     /// <inheritdoc />
-    public partial class Fir : Migration
+    public partial class First : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -48,6 +48,21 @@ namespace Pokedex_MVC.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Types", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Username = table.Column<string>(type: "TEXT", nullable: true),
+                    Email = table.Column<string>(type: "TEXT", nullable: true),
+                    Password = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -108,6 +123,24 @@ namespace Pokedex_MVC.Migrations
                         name: "FK_EggGroupPokemon_EggGroups_EggGroupsId",
                         column: x => x.EggGroupsId,
                         principalTable: "EggGroups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Favourite",
+                columns: table => new
+                {
+                    PokemonDexId = table.Column<int>(type: "INTEGER", nullable: false),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Favourite", x => new { x.PokemonDexId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_Favourite_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -251,6 +284,11 @@ namespace Pokedex_MVC.Migrations
                 column: "PokemonsDexId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Favourite_UserId",
+                table: "Favourite",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Images_PokemonId",
                 table: "Images",
                 column: "PokemonId");
@@ -305,6 +343,14 @@ namespace Pokedex_MVC.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
+                name: "FK_Favourite_Pokemons_PokemonDexId",
+                table: "Favourite",
+                column: "PokemonDexId",
+                principalTable: "Pokemons",
+                principalColumn: "DexId",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_Images_Pokemons_PokemonId",
                 table: "Images",
                 column: "PokemonId",
@@ -323,6 +369,9 @@ namespace Pokedex_MVC.Migrations
                 name: "EggGroupPokemon");
 
             migrationBuilder.DropTable(
+                name: "Favourite");
+
+            migrationBuilder.DropTable(
                 name: "MovePokemon");
 
             migrationBuilder.DropTable(
@@ -336,6 +385,9 @@ namespace Pokedex_MVC.Migrations
 
             migrationBuilder.DropTable(
                 name: "EggGroups");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Moves");

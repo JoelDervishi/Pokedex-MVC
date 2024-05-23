@@ -37,7 +37,7 @@ public class HomeController : Controller
     {
         using (var context = new PokemonContext())
         {
-            context.Pokemon.AddRange(Pokemons);
+            context.Pokemons.AddRange(Pokemons);
             context.SaveChanges();
         }
 
