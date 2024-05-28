@@ -6,7 +6,6 @@ public class PokemonContext : DbContext{
     public DbSet<Move> Moves { get; set; }
     public DbSet<Pokemon> Pokemons { get; set; }
     public DbSet<Type> Types { get; set; }
-    public DbSet<TypesInteraction> TypesInteractions { get; set; }
     public DbSet<EggGroup> EggGroups { get; set; }
     public DbSet<User> Users { get; set; }
 
@@ -18,6 +17,17 @@ public class PokemonContext : DbContext{
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<TypesInteraction>().HasKey(x => new {x.FirstTypeId, x.SecondTypeId});
+
+        modelBuilder.Entity<TypesInteraction>()
+            .HasOne(e => e.FirstType)
+            .WithMany()
+            .HasForeignKey(e => e.FirstTypeId);
+        modelBuilder.Entity<TypesInteraction>()
+            .HasOne(e => e.SecondType)
+            .WithMany()
+            .HasForeignKey(e => e.SecondTypeId);        
+
         modelBuilder.Entity<Pokemon_Ability>().HasKey(x => new {x.PokemonDexId, x.AbilityId});
 
         modelBuilder.Entity<Pokemon_Ability>()

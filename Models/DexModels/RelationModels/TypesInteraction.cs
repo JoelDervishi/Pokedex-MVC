@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-[Keyless]
 public class TypesInteraction{
     
     public float Interaction { get; set; }

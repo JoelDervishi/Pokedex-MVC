@@ -103,13 +103,13 @@ namespace Pokedex_MVC.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Power")
+                    b.Property<int?>("Power")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("PowerPoints")
+                    b.Property<int?>("PowerPoints")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Precision")
+                    b.Property<int?>("Precision")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("TypeId")
@@ -271,17 +271,17 @@ namespace Pokedex_MVC.Migrations
                     b.Property<int>("FirstTypeId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<float>("Interaction")
-                        .HasColumnType("REAL");
-
                     b.Property<int>("SecondTypeId")
                         .HasColumnType("INTEGER");
 
-                    b.HasIndex("FirstTypeId");
+                    b.Property<float>("Interaction")
+                        .HasColumnType("REAL");
+
+                    b.HasKey("FirstTypeId", "SecondTypeId");
 
                     b.HasIndex("SecondTypeId");
 
-                    b.ToTable("TypesInteractions");
+                    b.ToTable("TypesInteraction");
                 });
 
             modelBuilder.Entity("User", b =>
